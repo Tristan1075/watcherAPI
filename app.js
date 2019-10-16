@@ -30,4 +30,6 @@ userRoutes(app);
 productRoutes(app);
 userAddressRoutes(app);
 
-app.listen(port, hostname);
+app.listen(port, () => {
+    console.log('App listening on port ' + port);
+});
