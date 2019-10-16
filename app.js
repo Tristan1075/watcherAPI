@@ -25,26 +25,18 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const userAddressRoutes = require('./routes/userAddressRoutes');
-<<<<<<< Updated upstream
 const sizeRoutes = require('./routes/sizeRoutes');
 const tagRoutes = require('./routes/tagRoutes');
-
-=======
 const orderRoutes = require('./routes/orderRoutes');
-const sizeRoutes = require('./routes/sizeRoute');
->>>>>>> Stashed changes
 
 userRoutes(app);
 productRoutes(app);
 userAddressRoutes(app);
-<<<<<<< Updated upstream
 sizeRoutes(app);
 tagRoutes(app);
 
-=======
 orderRoutes(app);
 sizeRoutes(app);
->>>>>>> Stashed changes
 
 app.listen(port, () => {
     console.log('App listening on port ' + port);
