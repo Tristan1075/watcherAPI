@@ -12,7 +12,7 @@ exports.getAllTags = function (req, res){
 };
 
 exports.getTag = function(req, res){
-    Tag.find({_id: req.body.id}, function(err, tag){
+    Tag.find({_id: req.params.tagId}, function(err, tag){
         if(err){
             res.send(err);
         }

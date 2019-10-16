@@ -12,7 +12,7 @@ exports.getAllSize = function(req, res){
 };
 
 exports.getSize = function(req, res){
-    Size.find({_id: req.body.id}, function(err, size){
+    Size.find({_id: req.params.sizeId}, function(err, size){
         if(err){
             res.send(err);
         }

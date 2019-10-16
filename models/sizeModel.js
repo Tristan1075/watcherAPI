@@ -8,4 +8,4 @@ var sizeSchema = new Schema({
             required: true
         },
 });
-module.exports = mongoose.model('sizeModel.js', sizeSchema);
+module.exports = mongoose.model('size', sizeSchema);

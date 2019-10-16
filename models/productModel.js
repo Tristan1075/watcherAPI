@@ -19,6 +19,10 @@ var productSchema = new Schema({
         type: String,
         required: true,
     },
+    picture: {
+        type: String,
+        required: true,
+    },
     active: {
         type: Boolean,
         default: true,

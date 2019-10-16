@@ -4,7 +4,7 @@ var Schema =  mongoose.Schema;
 
 var product_sizeSchema = new Schema({
     id_product:{
-        type: Schema.Object.Id,
+        type: Schema.Types.ObjectId,
         ref: 'product',
         required: true
     },
