@@ -81,15 +81,15 @@ exports.order_cancel = function(req, res){
     });
 };
 
-exports.order_state = function(req, res){
+exports.order_state = async function(req, res){
     Order.findOne({id: req.body.id_order}, function(err, order){
        if(err) res.send(err);
        res.json(order.state);
     });
 };
 
-exports.order_history = function(req, res){
-    Order.find().all('id_user', req.body.id_user, function(err, orders){
+exports.order_history = async function(req, res){
+    Order.find({id_user: req.body.id_user}, function(err, orders){
         if(err) res.send(err);
         res.json(orders);
     });
