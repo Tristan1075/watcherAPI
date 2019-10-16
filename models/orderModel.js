@@ -25,7 +25,7 @@ var orderSchema = new Schema({
         required: true
     },
     date_created: {
-        type: Date.now(),
+        type: Date,
         required: true
     },
     date_updated: {

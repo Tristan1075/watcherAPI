@@ -34,9 +34,7 @@ productRoutes(app);
 userAddressRoutes(app);
 sizeRoutes(app);
 tagRoutes(app);
-
 orderRoutes(app);
-sizeRoutes(app);
 
 app.listen(port, () => {
     console.log('App listening on port ' + port);
