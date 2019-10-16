@@ -26,7 +26,7 @@ const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const userAddressRoutes = require('./routes/userAddressRoutes');
 const orderRoutes = require('./routes/orderRoutes');
-const sizeRoutes = require('./routes/sizeRoute');
+const sizeRoutes = require('./routes/sizeRoutes');
 
 
 userRoutes(app);
