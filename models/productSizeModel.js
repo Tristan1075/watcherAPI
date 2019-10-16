@@ -4,11 +4,13 @@ var Schema =  mongoose.Schema;
 
 var product_sizeSchema = new Schema({
     id_product:{
-        type: Number,
+        type: Schema.Object.Id,
+        ref: 'product',
         required: true
     },
     id_size:{
-        type: Number,
+        type: Schema.Types.ObjectId,
+        ref: 'size',
         required: true
     }
 });

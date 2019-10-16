@@ -25,10 +25,14 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
 const userAddressRoutes = require('./routes/userAddressRoutes');
+const orderRoutes = require('./routes/orderRoutes');
+const sizeRoutes = require('./routes/sizeRoute');
 
 userRoutes(app);
 productRoutes(app);
 userAddressRoutes(app);
+orderRoutes(app);
+sizeRoutes(app);
 
 app.listen(port, () => {
     console.log('App listening on port ' + port);

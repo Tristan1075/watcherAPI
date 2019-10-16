@@ -9,7 +9,8 @@ var collection_userSchema = new Schema({
         required: true
     },
     id_collection: {
-        type: Number,
+        type: Schema.Types.ObjectId,
+        ref: 'collection',
         required: true
     },
     viewed_times:{

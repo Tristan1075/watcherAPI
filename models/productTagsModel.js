@@ -4,11 +4,13 @@ var Schema =  mongoose.Schema;
 
 var product_tagsSchema = new Schema({
     id_product:{
-        type: Number,
+        type: Schema.Types.ObjectId,
+        ref: 'product',
         required: true
     },
     id_tag:{
-        type: Number,
+        type: Schema.Types.ObjectId,
+        ref: 'tags',
         required: true
     }
 });
