@@ -1,4 +1,4 @@
-Tag = require('../models/tagsModel');
+Tag = require('../models/tagModel');
 
 exports.getAllTags = function (req, res){
     Tag.find({}, function (err, tag){
