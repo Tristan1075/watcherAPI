@@ -21,10 +21,12 @@ async function getSize(product){
 
 async function getTags(product){
     try{
-        for(let i=0;i<product.tags.length;i++){
-            var tags = await Tag.find({_id: product.tags[i]});
+        var tags = await Tag.find({_id: { $in: product.tags }});
+        var tagsName = [];
+        for(let i=0;i<tags.length;i++){
+            tagsName.push(tags[i].name);
         }
-        return tags
+        return tagsName
     }
     catch(error){
         res.send(error);
