@@ -1,5 +1,4 @@
 Order = require('../models/orderModel');
-OrderProduct = require('../models/orderProductModel');
 Product = require('../models/productModel');
 const jwt = require('jsonwebtoken');
 const config = require('../config/secrets');
