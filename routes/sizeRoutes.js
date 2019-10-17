@@ -9,4 +9,7 @@ module.exports = function(app){
 
     app.route('/sizes/create')
         .post(sizes.createSize);
+
+    app.route('/sizes/updateOrder')
+        .post(sizes.updateOrder);
 };
