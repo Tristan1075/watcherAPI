@@ -9,16 +9,19 @@ const stripe = require("stripe")("sk_test_DH7gtTJ7XlHZR61iXtHuFjif00OO9eeJI5");
 id user
 id_shipping adress
  */
-exports.order_create = function(req, res){
-    var new_order = new Order(req.body);
-    new_order.state = 0;
-    new_order.save(function(err,order){
-        if(err) res.send(err);
+exports.order_create = async function(req, res){
+    try{
+        var new_order = new Order(req.body);
+        new_order.state = 0;
+        var order = await new_order.save();
         res.json(order);
-    })
+    }
+    catch(error){
+        res.send(error);
+    }
 };
 
-exports.order_pay = function(req, res){
+exports.order_pay = async function(req, res){
     Order.findOne({_id: req.body.id_order}, function(err, order){
         if(err) res.send(err);
         var amount = 0;
@@ -39,7 +42,7 @@ exports.order_pay = function(req, res){
     });
 };
 
-exports.order_total_price = function(req, res){
+exports.order_total_price = async function(req, res){
     Order.findOne({_id: req.body.id_order}, function(err, order){
         if(err) res.send(err);
         var amount = 0;
@@ -54,7 +57,7 @@ exports.order_total_price = function(req, res){
     });
 };
 
-exports.order_products = function(req, res){
+exports.order_products = async function(req, res){
     Order.findOne({_id: req.body.id_order}, function(err, order){
         if(err) res.send(err);
         let productsArray = [];
@@ -69,7 +72,7 @@ exports.order_products = function(req, res){
     });
 };
 
-exports.order_cancel = function(req, res){
+exports.order_cancel = async function(req, res){
     Order.findOne({id: req.body.id_order}, function(err, order){
         if(err) res.send(err);
         if(order.state === 3 || order.state === 1){
