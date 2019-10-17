@@ -7,10 +7,12 @@ const config = require('../config/secrets');
 
 async function getSize(product){
     try{
-        for(let i=0;i<product.sizes.length;i++){
-            var sizes = await Size.find({_id: product.sizes[i]});
+        var sizes = await Size.find({_id: { $in: product.sizes}}).sort({order: 1})
+        var sizesName = [];
+        for(let i=0; i<sizes.length;i++){
+            sizesName.push(sizes[i].name);
         }
-        return sizes;
+        return sizesName;
     }
     catch(error){
         res.send(error);
@@ -67,11 +69,9 @@ exports.addSizeToProduct = async function(req, res){
     try{
         var product = await Product.findOne({_id: req.body.id});
         if(product.sizes.length > 0 && typeof product.sizes !== 'undefined' && product.sizes != null){
-            console.log("product already have size")
             var newSizes = product.sizes.concat(req.body.sizes);
         }
         else{
-            console.log("product doesn't have size")
             var newSizes = req.body.sizes;
         }
         product = await Product.findOneAndUpdate({_id: req.body.id}, {sizes: newSizes});

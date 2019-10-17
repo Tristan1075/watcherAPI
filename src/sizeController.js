@@ -29,3 +29,13 @@ exports.createSize = async function(req, res){
         res.send(error);
     }
 };
+
+exports.updateOrder = async function(req, res){
+    try{
+        var updatedSize = await Size.findOneAndUpdate({_id: req.body.id}, { order: req.body.order });
+        res.send(updatedSize);
+    }
+    catch(error){
+        res.send(error);
+    }
+}
