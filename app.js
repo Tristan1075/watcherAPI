@@ -27,6 +27,7 @@ const productRoutes = require('./routes/productRoutes');
 const userAddressRoutes = require('./routes/userAddressRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const sizeRoutes = require('./routes/sizeRoutes');
+const imageRoutes = require('./routes/imagesRoutes');
 
 
 userRoutes(app);
@@ -34,6 +35,7 @@ productRoutes(app);
 userAddressRoutes(app);
 sizeRoutes(app);
 orderRoutes(app);
+imageRoutes(app);
 
 app.listen(port, () => {
     console.log('App listening on port ' + port);
