@@ -1,35 +1,31 @@
 Tag = require('../models/tagModel');
 
-exports.getAllTags = function (req, res){
-    Tag.find({}, function (err, tag){
-        if(err){
-            res.send(err);
-        }
-        else{
-            res.json(tag);
-        }
-    });
+exports.getAllTags = async function (req, res){
+    try{
+        var tags = await Tag.find({});
+        res.json(tags);
+    }
+    catch(error){
+        res.send(error);
+    }
 };
 
-exports.getTag = function(req, res){
-    Tag.find({_id: req.params.tagId}, function(err, tag){
-        if(err){
-            res.send(err);
-        }
-        else{
-            res.json(tag);
-        }
-    });
+exports.getTag = async function(req, res){
+    try{
+        var tag = await Tag.fin({_id: req.params.tagId});
+        res.json(tag);
+    }
+    catch(error){
+        res.send(error);
+    }
 };
 
-exports.createTag = function(req, res){
-    var newTag = new Tag(req.body);
-    newTag.save(function(err, tag){
-        if(err){
-            res.send(err);
-        }
-        else{
-            res.json(tag);
-        }
-    });
+exports.createTag = async function(req, res){
+    try{
+        var newTag = await new Tag(req.body).save();
+        res.json(newTag);
+    }
+    catch(error){
+        res.send(error);
+    }
 };
