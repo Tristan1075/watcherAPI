@@ -65,9 +65,16 @@ exports.createProduct = async function(req, res){
 
 exports.addSizeToProduct = async function(req, res){
     try{
-        var product = await Product.find({_id: req.post.id});
-        var newSizes = await product.sizes.push.apply(req.body.sizes);
-        product = await Product.findOneAndUpdate({_id: req.post.id}, {sizes: newSizes});
+        var product = await Product.findOne({_id: req.body.id});
+        if(product.sizes.length > 0 && typeof product.sizes !== 'undefined' && product.sizes != null){
+            console.log("product already have size")
+            var newSizes = product.sizes.concat(req.body.sizes);
+        }
+        else{
+            console.log("product doesn't have size")
+            var newSizes = req.body.sizes;
+        }
+        product = await Product.findOneAndUpdate({_id: req.body.id}, {sizes: newSizes});
         res.json(product);
     }
     catch(error){
@@ -77,7 +84,7 @@ exports.addSizeToProduct = async function(req, res){
 
 exports.addTagsToProduct = async function(req, res){
     try{
-        var product = await Product.find({_id: req.post.id});
+        var product = await Product.find({_id: req.body.id});
         var newTags = await product.tags.push.apply(req.body.tags);
         product = await Product.findOneAndUpdate({_id: req.post.id}, {tags: newTags});
         res.json(product);
