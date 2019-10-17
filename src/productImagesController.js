@@ -80,3 +80,19 @@ exports.postCustomWatch = async function (req, res) {
         }
     });
 };
+
+async function getImageLink(type, id) {
+    switch (type) {
+        case "strap":
+            return await Strap_image.find({_id: id});
+            break;
+        case "face":
+            return await Face_image.find({_id: id});
+            break;
+        case "case":
+            return await Case_image.find({_id: id});
+            break;
+        default:
+            console.log("Unknown image type")
+    }
+}
