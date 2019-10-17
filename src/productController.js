@@ -50,6 +50,8 @@ exports.getAllProducts = async function(req, res){
 exports.getProduct = async function(req, res){
     try{
         var product = await Product.findOne({_id: req.params.productId});
+        product.sizes = await getSizes(product);
+        product.tags = await getTags(product);
         res.json(product);
     }
     catch(error){
