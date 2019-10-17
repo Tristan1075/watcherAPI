@@ -1,15 +1,32 @@
 Product = require('../models/productModel');
 Size = require('../models/sizeModel');
+Tag = require('../models/tagModel');
 
 const jwt = require('jsonwebtoken');
 const config = require('../config/secrets');
 
 async function getSize(product){
     try{
-        for(let i=0;i<product.sizes.length;i++){
-            var sizes = await Size.find({_id: product.sizes[i]});
+        var sizes = await Size.find({_id: { $in: product.sizes}}).sort({order: 1})
+        var sizesName = [];
+        for(let i=0; i<sizes.length;i++){
+            sizesName.push(sizes[i].name);
         }
-        return sizes;
+        return sizesName;
+    }
+    catch(error){
+        res.send(error);
+    }
+}
+
+async function getTags(product){
+    try{
+        var tags = await Tag.find({_id: { $in: product.tags }});
+        var tagsName = [];
+        for(let i=0;i<tags.length;i++){
+            tagsName.push(tags[i].name);
+        }
+        return tagsName
     }
     catch(error){
         res.send(error);
@@ -21,6 +38,7 @@ exports.getAllProducts = async function(req, res){
         var products = await Product.find({active: true}).sort({viewed_times: -1});
         for(let i=0;i<products.length;i++){
             products[i].sizes = await getSize(products[i]);
+            products[i].tags = await getTags(products[i]);
         }
         res.json(products)
     }
@@ -51,9 +69,14 @@ exports.createProduct = async function(req, res){
 
 exports.addSizeToProduct = async function(req, res){
     try{
-        var product = await Product.find({_id: req.post.id});
-        var newSizes = await product.sizes.push.apply(req.body.sizes);
-        product = await Product.findOneAndUpdate({_id: req.post.id}, {sizes: newSizes});
+        var product = await Product.findOne({_id: req.body.id});
+        if(product.sizes.length > 0 && typeof product.sizes !== 'undefined' && product.sizes != null){
+            var newSizes = product.sizes.concat(req.body.sizes);
+        }
+        else{
+            var newSizes = req.body.sizes;
+        }
+        product = await Product.findOneAndUpdate({_id: req.body.id}, {sizes: newSizes});
         res.json(product);
     }
     catch(error){
@@ -63,7 +86,7 @@ exports.addSizeToProduct = async function(req, res){
 
 exports.addTagsToProduct = async function(req, res){
     try{
-        var product = await Product.find({_id: req.post.id});
+        var product = await Product.find({_id: req.body.id});
         var newTags = await product.tags.push.apply(req.body.tags);
         product = await Product.findOneAndUpdate({_id: req.post.id}, {tags: newTags});
         res.json(product);

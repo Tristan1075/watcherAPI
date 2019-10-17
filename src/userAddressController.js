@@ -3,58 +3,57 @@ UserAddress = require('../models/userAddressModel');
 const config = require('../config/secrets');
 
 exports.add_address = async function(req, res){
-    const address = new UserAddress(req.body);
-    address.save(function(err,user){
-        if(err) res.send(err);
-        res.json(user);
-    })
+    try{
+        var address = new UserAddress(req.body);
+        var newAddress = await address.save();
+        res.json(newAddress);
+    }
+    catch(error){
+        res.send(error);
+    }
 };
 
 exports.get_all_address = async function(req, res) {
-    UserAddress.find({}, function (err, product) {
-        if (err) {
-            res.send(err);
-        }
-        else {
-            res.json(product);
-        }
-    });
+    try{
+        var addresses = await UserAddress.find({});
+        res.json(addresses);
+    }
+    catch(error){
+        res.send(error);
+    }
 };
 
 exports.get_address_by_user = async function(req, res) {
-    UserAddress.find({id_user: req.params.id_user}, function(err, address){
-        if (err) {
-            res.send(err);
-        }
-        else {
-            res.json(address);
-        }
-    });
+    try{
+        var address = await UserAddress.find({id_user: req.params.id_user});
+        res.json(address);
+    }
+    catch(error){
+        res.send(error);
+    }
 };
 
 exports.update_address = async function(req, res) {
-    UserAddress.findOne({_id: req.params.id}, function(err, address){
-        if (err) {
-            res.send(err);
-        }
-        else {
-            address.street = req.body.street;
-            address.city = req.body.city;
-            address.country = req.body.country;
-            address.save();
-            res.json(address);
-        }
-    });
+    try{
+        var address = await UserAddress.findOne({_id: req.params.id});
+        address.street = req.body.street;
+        address.city = req.body.city;
+        address.country = req.body.country;
+        address.save();
+        res.json(address)
+    }
+    catch(error){
+        res.send(error);
+    }
 };
 
 exports.delete_address = async function(req, res) {
-    UserAddress.findOne({_id: req.params.id}, function(err, address){
-        if (err) {
-            res.send(err);
-        }
-        else {
-            address.remove();
-            res.json('success');
-        }
-    });
+    try{
+        var address = await UserAddress.findOne({_id: req.params.id});
+        address.remove();
+        res.json('success');
+    }
+    catch(error){
+        res.send(error);
+    }
 };
