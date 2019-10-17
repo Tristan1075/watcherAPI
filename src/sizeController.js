@@ -1,35 +1,41 @@
 Size = require('../models/sizeModel');
 
-exports.getAllSize = function(req, res){
-    Size.find({}, function (err, size){
-        if(err){
-            res.send(err);
-        }
-        else{
-            res.json(size)
-        }
-    });
+exports.getAllSize = async function(req, res){
+    try{
+        var sizes = await Size.find({});
+        res.send(sizes);
+    }
+    catch(error){
+        res.send(error);
+    }
 };
 
-exports.getSize = function(req, res){
-    Size.find({_id: req.params.sizeId}, function(err, size){
-        if(err){
-            res.send(err);
-        }
-        else{
-            res.json(size);
-        }
-    });
+exports.getSize = async function(req, res){
+    try{
+        var size = await Size.find({_id: req.params.sizeId});
+        res.send(size);
+    }
+    catch(error){
+        res.send(error);
+    }
 };
 
-exports.createSize = function(req, res){
-    var newSize = new Size(req.body);
-    newSize.save(function(err, size){
-        if(err){
-            res.send(err);
-        }
-        else{
-            res.json(size);
-        }
-    });
+exports.createSize = async function(req, res){
+    try{
+        var newSize = await new Size(req.body).save();
+        res.send(newSize);
+    }
+    catch(error){
+        res.send(error);
+    }
 };
+
+exports.updateOrder = async function(req, res){
+    try{
+        var updatedSize = await Size.findOneAndUpdate({_id: req.body.id}, { order: req.body.order });
+        res.send(updatedSize);
+    }
+    catch(error){
+        res.send(error);
+    }
+}

@@ -13,6 +13,10 @@ module.exports = function(app){
     app.route('/order/pay')
         .all(middleware.verify_token)
         .post(order.order_pay);
+    app.route('/order/addProduct')
+        .post(order.add_product);
+    app.route('/order/removeProduct')
+        .post(order.remove_product);
 };
 
 
