@@ -86,7 +86,7 @@ exports.addSizeToProduct = async function(req, res){
 
 exports.addTagsToProduct = async function(req, res){
     try{
-        var product = await Product.find({_id: req.body.id});
+        var product = await Product.findOne({_id: req.body.id});
         if(product.tags.length > 0 && typeof product.tags !== 'undefined' && product.tags != null){
             var newTags = product.tags.concat(req.body.tags);
         }
