@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 
 var Schema =  mongoose.Schema;
 
-var strapImageModel = new Schema({
+var strapImageSchema = new Schema({
     link:{
         type: String,
         required: true
     }
 });
-module.exports = mongoose.model('Strap_image', strapImageModel);
+module.exports = mongoose.model('Strap_image', strapImageSchema);

@@ -1,6 +1,7 @@
 Strap_image = require('../models/strapImageModel');
 Face_image = require('../models/faceImageModel');
 Case_image = require('../models/caseImageModel');
+CustomWatch = require('../models/customWatchModel');
 
 exports.getAllImages = async function(req, res) {
     var datas = [
@@ -32,7 +33,6 @@ exports.getAllImages = async function(req, res) {
             datas[2].push(images);
         }
     });
-    console.log("datas : " + datas);
     res.json(datas);
 };
 
@@ -65,6 +65,18 @@ exports.postImageCase = async function (req, res) {
             res.send(err);
         }else {
             res.json(image);
+        }
+    });
+};
+
+exports.postCustomWatch = async function (req, res) {
+    let newWatch = new CustomWatch(req.body);
+    newWatch.save(function (err, watch) {
+        if(err) {
+            res.send(err);
+        }
+        else {
+            res.json(watch);
         }
     });
 };

@@ -5,5 +5,6 @@ module.exports = function(app) {
     app.post('/images/strap', imageController.postImageStrap);
     app.post('/images/face', imageController.postImageFace);
     app.post('/images/case', imageController.postImageCase);
+    app.post('/images/custom', imageController.postCustomWatch);
 
 };
