@@ -22,25 +22,44 @@ exports.order_create = async function(req, res){
 
 async function getProducts(order){
     try{
-        var products = await Product.find({_id: { $in: order.products }});
+        var orderProducts = [];
+        for(let i=0;i<order.products.length;i++){
+            orderProducts.push(order.products[i].product);
+        }
+        var products = await Product.find({_id: { $in: orderProducts }});
         return products;
     }
     catch(error){
-        res.send(error);
+        console.log(error);
+    }
+}
+
+async function getLineOrder(order){
+    try{
+        var products = [];
+        for(let i=0;i<order.products.length;i++){
+            var product = await Product.findOne({_id: order.products[i].product})
+            let lineOrder = { product: product, quantity: order.products[i].quantity }
+            products.push(lineOrder)
+        }
+        return products;
+    }
+    catch(error){
+        console.log(error);
     }
 }
 
 async function getProductsAmount(order){
     try{
         var amount = 0;
-        var products = getProducts(order);
+        var products = await getLineOrder(order);
         for(let i=0; i<products.length;i++){
-            amount += products[i].price;
+            amount += products[i].product.price * products[i].quantity;
         }
         return amount;
     }
     catch(error){
-        res.send(error);
+        console.log(error);
     }
 }
 
@@ -119,13 +138,13 @@ exports.order_history = async function(req, res){
 exports.add_product = async function(req, res){
     try{
         var order = await Order.findOne({_id: req.body.id_order});
-        if(order.products.length > 0 && typeof order.products !== 'undefined' && order.product != null){
+        if(order.products.length > 0 && typeof order.products !== 'undefined' && order.products != null){
             var newProducts = order.products.concat(req.body.products);
         }
         else{
             var newProducts = req.body.products;
         }
-        order = await Order.findOneAndUpdate({_id: req.post.id_order}, {products: newProducts})
+        order = await Order.findOneAndUpdate({_id: req.body.id_order}, {products: newProducts})
         res.json(order);
     }
     catch(error){

@@ -10,6 +10,17 @@ State 4 Retour
 State 5 Annulé
  */
 
+ var orderLineSchema = new Schema({
+     product: {
+         type: String,
+         required: true
+     },
+     quantity: {
+         type: Number,
+         default: 1
+     }
+ });
+
 var orderSchema = new Schema({
     id_user:{
         type: Schema.Types.ObjectId,
@@ -22,7 +33,6 @@ var orderSchema = new Schema({
     },
     state: {
         type: Number,
-        required: true
     },
     date_created: {
         type: Date,
@@ -34,8 +44,6 @@ var orderSchema = new Schema({
     id_stripe_payment:{
         type: String
     },
-    products:{
-        type: Array,
-    }
+    products: [orderLineSchema]
 });
 module.exports = mongoose.model('order', orderSchema);
