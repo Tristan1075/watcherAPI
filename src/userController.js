@@ -21,7 +21,7 @@ exports.user_register = async function(req, res){
 
 exports.user_login = async function(req, res){
     try{
-        var token = await User.findOne({email: req.body.email});
+        var user = await User.findOne({email: req.body.email});
         if(user.email === req.body.email && user.password === req.body.password){
             var token = await jwt.sign({user: user}, config.secrets.jwt_key, {expiresIn: '30 days'});
             res.json(token)
