@@ -123,7 +123,7 @@ exports.disableProduct = async function(req, res){
 
 exports.updateImage = async function(req, res){
     try{
-        var updatedProduct = await Product.findOneAndUpdate({_id: req.body.id}, { picture: req.body.picture});
+        var updatedProduct = await Product.findOneAndUpdate({_id: req.body.id}, { image: req.body.image});
         res.json(updatedProduct);
     }
     catch(error){
