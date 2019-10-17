@@ -5,7 +5,7 @@ Tag = require('../models/tagModel');
 const jwt = require('jsonwebtoken');
 const config = require('../config/secrets');
 
-async function getSize(product){
+async function getSizes(product){
     try{
         var sizes = await Size.find({_id: { $in: product.sizes}}).sort({order: 1})
         var sizesName = [];
@@ -37,7 +37,7 @@ exports.getAllProducts = async function(req, res){
     try{
         var products = await Product.find({active: true}).sort({viewed_times: -1});
         for(let i=0;i<products.length;i++){
-            products[i].sizes = await getSize(products[i]);
+            products[i].sizes = await getSizes(products[i]);
             products[i].tags = await getTags(products[i]);
         }
         res.json(products)

@@ -33,6 +33,9 @@ var orderSchema = new Schema({
     },
     id_stripe_payment:{
         type: String
+    },
+    products:{
+        type: Array,
     }
 });
 module.exports = mongoose.model('order', orderSchema);
