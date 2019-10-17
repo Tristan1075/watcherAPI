@@ -25,8 +25,8 @@ module.exports = function(app){
     app.route('/products/activate')
         .post(products.activateProduct);
 
-    app.route('/products/updatePicture')
-        .post(products.updatePicture);
+    app.route('/products/updateImage')
+        .post(products.updateImage);
 };
 
 

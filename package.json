@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "nodemon app.js"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
@@ -15,6 +15,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.7.5",
     "morgan": "~1.9.0",
+    "nodemon": "^1.19.4",
     "pug": "^2.0.4",
     "random-hash": "^4.0.1",
     "request": "^2.88.0",
