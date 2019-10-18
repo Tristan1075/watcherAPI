@@ -73,7 +73,7 @@ exports.order_pay = async function(req, res){
         newOrder.id_shipping = 923;
         newOrder.state = 1;
         newOrder.date_created = Date.now();
-        newOrder.products = req.body.allIdProducts;
+        newOrder.products = [];
         newOrder.save();
         console.log("newOrder : " + newOrder);
         /*var result = await stripe.charges.create({
