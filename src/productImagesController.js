@@ -95,10 +95,14 @@ exports.postCustomWatch = async function (req, res) {
     try {
         console.log("try fusion images");
         if (fs.existsSync("images/bracelet.png"))  {
-            images("images/bracelet.png")
-                .draw(images("images/cadran.png"),0,0)
-                .draw(images("images/boitier.png"),0,0)
-                .save("images/custom_watch_" + newWatch.id_user + ".png", {quality: 50});
+            if (fs.existsSync("images/cadran.png")) {
+                if (fs.existsSync("images/boitier.png")) {
+                    images("images/bracelet.png")
+                        .draw(images("images/cadran.png"),0,0)
+                        .draw(images("images/boitier.png"),0,0)
+                        .save("images/custom_watch_" + newWatch.id_user + ".png", {quality: 50});
+                }
+            }
         }
         else {
             console.log("files arent downloaded yet");
