@@ -189,15 +189,15 @@ exports.fusionImages = async function(req, res) {
         images("images/bracelet.png")
             .draw(images("images/cadran.png"),0,0)
             .draw(images("images/boitier.png"),0,0)
-            .save("images/custom_watch_" + newWatch.id_user + ".png", {quality: 50});
+            .save("images/custom_watch_.png", {quality: 50});
 
     } catch (e) {
         console.log("ERREUR FUSION : " + e.toString());
     }
 
     try {
-        if (fs.existsSync("images/custom_watch_" + newWatch.id_user + ".png")) {
-            fs.readFile("images/custom_watch_" + newWatch.id_user + ".png", function (err, content) {
+        if (fs.existsSync("images/custom_watch_.png")) {
+            fs.readFile("images/custom_watch_.png", function (err, content) {
                 if (err) {
                     console.log(err);
                 } else {
