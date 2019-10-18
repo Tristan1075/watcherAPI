@@ -72,6 +72,7 @@ exports.order_pay = async function(req, res){
             currency: 'eur',
             source: req.body.tokenId,
             description: 'Test payment',
+            customer: "cus_G08rEDwjETa8K5"
         });
         let newOrder = new Order();
         console.log("newOrder obj created : " + newOrder);
