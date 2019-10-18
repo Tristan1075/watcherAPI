@@ -8,7 +8,7 @@ module.exports = function(app){
     app.post('/order/products', order.order_products);
     app.post('/order/state', order.order_state);
     app.route('/order/history')
-        .all(middleware.verify_token)
+        //.all(middleware.verify_token)
         .post(order.order_history);
     app.route('/order/pay')
         //.all(middleware.verify_token)
