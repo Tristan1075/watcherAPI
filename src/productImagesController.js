@@ -82,9 +82,7 @@ exports.postCustomWatch = async function (req, res) {
     /*console.log("customStrap.link : " + customStrap.link);
     console.log("customFace.link : " + customFace.link);
     console.log("customCase.link : " + customCase.link);*/
-    await download(customStrap.link, 'images/bracelet.png', function(){
-        console.log('strap downloaded');
-    });
+    await download(customStrap.link, 'images/bracelet.png');
     await download(customFace.link, 'images/cadran.png', function(){
         console.log('face downloaded');
     });
@@ -151,14 +149,19 @@ async function getImageLink(type, id) {
     }
 }
 
-let download = async function(uri, filename, callback){
-    request.head(uri, async function(err, res, body){
-        request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
-    });
-    rp(uri)
+let download = async function(uri, filename){
+    //let readStream = request(uri);
+    //let
+
+    return new Promise ((resolve, reject) => {
+        return request(uri).pipe(fs.createWriteStream(filename)).on('close', () => {
+            return resolve()
+        });
+    })
+    /*rp(uri)
         .then(function(body, data) {
             console.log("downloading " + filename + "...");
-        });
+        });*/
 };
 
 exports.postImageToFusion = async function (req, res) {
@@ -170,9 +173,8 @@ exports.postImageToFusion = async function (req, res) {
     /*console.log("customStrap.link : " + customStrap.link);
     console.log("customFace.link : " + customFace.link);
     console.log("customCase.link : " + customCase.link);*/
-    await download(customStrap.link, 'images/bracelet.png', function(){
-        console.log('strap downloaded');
-    });
+
+    await download(customStrap.link, 'images/bracelet.png');
     await download(customFace.link, 'images/cadran.png', function(){
         console.log('face downloaded');
     });
