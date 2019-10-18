@@ -107,7 +107,7 @@ function addReferences(existReference, newReference){
 exports.addSizeToProduct = async function(req, res){
     try{
         let product = await Product.findOne({_id: req.body.id});
-        let newSizes = await addReferences(product,req.body.sizes,res);
+        let newSizes = await addReferences(product,req.body.sizes);
         product = await Product.findOneAndUpdate({_id: req.body.id}, {sizes: newSizes});
         res.json(product);
     }
@@ -157,6 +157,18 @@ exports.updateImage = async function(req, res){
         res.send(error);
     }
 };
+
+exports.addImages = async function(req, res){
+    try{
+        let product = await Product.findOne({_id: req.body.id});
+        let newImages = await addReferences(product,req.body.images);
+        product = await Product.findOneAndUpdate({_id: req.body.id}, {images: newImages});
+        res.json(product);
+    }
+    catch(error){
+        res.send(error);
+    }
+}
 
 exports.activateProduct = async function(req, res){
     try{
