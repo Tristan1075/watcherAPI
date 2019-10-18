@@ -26,7 +26,7 @@ exports.getAllImages = async function(req, res) {
             res.send(err);
         }
         else {
-            datas[1] = images;
+            datas[2] = images;
         }
     });
     let caseImages = await Case_image.find({}, function (err, images) {
@@ -34,7 +34,7 @@ exports.getAllImages = async function(req, res) {
             res.send(err);
         }
         else {
-            datas[2] = images;
+            datas[1] = images;
         }
     });
     res.json(datas);
