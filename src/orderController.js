@@ -141,7 +141,7 @@ exports.order_history = async function(req, res){
         res.json(orders);
     }
     catch(error){
-
+        console.log(error.toString());
     }
 };
 
