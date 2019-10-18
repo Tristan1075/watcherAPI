@@ -120,7 +120,7 @@ exports.postCustomWatch = async function (req, res) {
             }
         });
     }catch (e) {
-        console.log(e.toString());
+        console.log("ERROR send custom watch : " + e.toString());
     }
 };
 
