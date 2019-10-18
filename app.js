@@ -11,8 +11,13 @@ const app = express();
 const hostname = process.env.HOST;
 const port = process.env.PORT || 3000;
 
+app.set('etag', false);
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+app.use((req, res, next) => {
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private')
+    next()
+});
 
 mongoose.Promise = global.Promise;
 
