@@ -5,10 +5,10 @@ Tag = require('../models/tagModel');
 const jwt = require('jsonwebtoken');
 const config = require('../config/secrets');
 
-async function getSizes(product){
+async function getSizes(product,res){
     try{
-        var sizes = await Size.find({_id: { $in: product.sizes}}).sort({order: 1})
-        var sizesName = [];
+        let sizes = await Size.find({_id: { $in: product.sizes}}).sort({order: 1})
+        let sizesName = [];
         for(let i=0; i<sizes.length;i++){
             sizesName.push(sizes[i].name);
         }
@@ -19,10 +19,10 @@ async function getSizes(product){
     }
 }
 
-async function getTags(product){
+async function getTags(product,res){
     try{
-        var tags = await Tag.find({_id: { $in: product.tags }});
-        var tagsName = [];
+        let tags = await Tag.find({_id: { $in: product.tags }});
+        let tagsName = [];
         for(let i=0;i<tags.length;i++){
             tagsName.push(tags[i].name);
         }
@@ -33,13 +33,33 @@ async function getTags(product){
     }
 }
 
+async function getProductsTagsAndSizes(products,res){
+    try{
+        for(let i=0;i<products.length;i++){
+            products[i] = await getProductTagsAndSizes(products[i],res);
+        }
+        return products;
+    }
+    catch(error){
+        res.send(error);
+    }
+}
+
+async function getProductTagsAndSizes(product,res){
+    try{
+        product.sizes = await getSizes(products[i],res);
+        product.tags = await getTags(products[i],res);
+        return product;
+    }
+    catch(error){
+        res.send(error);
+    }
+}
+
 exports.getAllProducts = async function(req, res){
     try{
-        var products = await Product.find({active: true}).sort({viewed_times: -1});
-        for(let i=0;i<products.length;i++){
-            products[i].sizes = await getSizes(products[i]);
-            products[i].tags = await getTags(products[i]);
-        }
+        let products = await Product.find({active: true}).sort({viewed_times: -1});
+        products = await getProductsTagsAndSizes(products, res);
         res.json(products)
     }
     catch(error){
@@ -49,9 +69,8 @@ exports.getAllProducts = async function(req, res){
 
 exports.getProduct = async function(req, res){
     try{
-        var product = await Product.findOne({_id: req.params.productId});
-        product.sizes = await getSizes(product);
-        product.tags = await getTags(product);
+        let product = await Product.findOne({_id: req.params.productId});
+        product = await getProductTagsAndSizes(product,res);
         res.json(product);
     }
     catch(error){
@@ -61,7 +80,7 @@ exports.getProduct = async function(req, res){
 
 exports.createProduct = async function(req, res){
     try{
-        var newProduct = await new Product(req.body).save();
+        let newProduct = await new Product(req.body).save();
         res.json(newProduct);
     }
     catch(error){
@@ -69,15 +88,26 @@ exports.createProduct = async function(req, res){
     }
 };
 
-exports.addSizeToProduct = async function(req, res){
+function addReferences(existReference, newReference, res){
     try{
-        var product = await Product.findOne({_id: req.body.id});
-        if(product.sizes.length > 0 && typeof product.sizes !== 'undefined' && product.sizes != null){
-            var newSizes = product.sizes.concat(req.body.sizes);
+        let references = [];
+        if(existReference.length > 0 && typeof existReference !== 'undefined' && existReference != null){
+            references = existReference.concat(newReference);
         }
         else{
-            var newSizes = req.body.sizes;
+            references = newReference;
         }
+        return references;
+    }
+    catch(error){
+        res.send(error);
+    }
+}
+
+exports.addSizeToProduct = async function(req, res){
+    try{
+        let product = await Product.findOne({_id: req.body.id});
+        let newSizes = await addReferences(product,req.body.sizes,res);
         product = await Product.findOneAndUpdate({_id: req.body.id}, {sizes: newSizes});
         res.json(product);
     }
@@ -88,13 +118,8 @@ exports.addSizeToProduct = async function(req, res){
 
 exports.addTagsToProduct = async function(req, res){
     try{
-        var product = await Product.findOne({_id: req.body.id});
-        if(product.tags.length > 0 && typeof product.tags !== 'undefined' && product.tags != null){
-            var newTags = product.tags.concat(req.body.tags);
-        }
-        else{
-            var newTags = req.body.tags;
-        }
+        let product = await Product.findOne({_id: req.body.id});
+        let newTags = await addReferences(product.tags,req.body.tags,res);
         product = await Product.findOneAndUpdate({_id: req.post.id}, {tags: newTags});
         res.json(product);
     }
@@ -105,7 +130,7 @@ exports.addTagsToProduct = async function(req, res){
 
 exports.productViewed = async function(req, res){
     try{
-        var viewedProduct = await Product.findOneAndUpdate({_id: req.body.id}, { $inc: { viewed_times: 1}});
+        let viewedProduct = await Product.findOneAndUpdate({_id: req.body.id}, { $inc: { viewed_times: 1}});
         res.json(viewedProduct);
     }
     catch(error){
@@ -115,7 +140,7 @@ exports.productViewed = async function(req, res){
 
 exports.disableProduct = async function(req, res){
     try{
-        var disableProduct = await Product.findOneAndUpdate({_id: req.body.id}, {active: false});
+        let disableProduct = await Product.findOneAndUpdate({_id: req.body.id}, {active: false});
         res.json(disableProduct);
     }
     catch(error){
@@ -125,7 +150,7 @@ exports.disableProduct = async function(req, res){
 
 exports.updateImage = async function(req, res){
     try{
-        var updatedProduct = await Product.findOneAndUpdate({_id: req.body.id}, { image: req.body.image});
+        let updatedProduct = await Product.findOneAndUpdate({_id: req.body.id}, { image: req.body.image});
         res.json(updatedProduct);
     }
     catch(error){
@@ -135,7 +160,7 @@ exports.updateImage = async function(req, res){
 
 exports.activateProduct = async function(req, res){
     try{
-        var activeProduct = await Product.findOneAndUpdate({_id: req.body.id}, { active : true});
+        let activeProduct = await Product.findOneAndUpdate({_id: req.body.id}, { active : true});
         res.json(activeProduct);
     }
     catch(error){
