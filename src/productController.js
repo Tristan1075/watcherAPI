@@ -5,7 +5,7 @@ Tag = require('../models/tagModel');
 const jwt = require('jsonwebtoken');
 const config = require('../config/secrets');
 
-async function getSizes(product,res){
+async function getSizes(product){
     try{
         let sizes = await Size.find({_id: { $in: product.sizes}}).sort({order: 1})
         let sizesName = [];
@@ -15,11 +15,11 @@ async function getSizes(product,res){
         return sizesName;
     }
     catch(error){
-        res.send(error);
+        console.log(error)
     }
 }
 
-async function getTags(product,res){
+async function getTags(product){
     try{
         let tags = await Tag.find({_id: { $in: product.tags }});
         let tagsName = [];
@@ -29,38 +29,38 @@ async function getTags(product,res){
         return tagsName
     }
     catch(error){
-        res.send(error);
+        console.log(error)
     }
 }
 
-async function getProductsTagsAndSizes(products,res){
+async function getProductsTagsAndSizes(products){
     try{
         for(let i=0;i<products.length;i++){
-            products[i] = await getProductTagsAndSizes(products[i],res);
+            products[i] = await getProductTagsAndSizes(products[i]);
         }
         return products;
     }
     catch(error){
-        res.send(error);
+        console.log(error)
     }
 }
 
-async function getProductTagsAndSizes(product,res){
+async function getProductTagsAndSizes(product){
     try{
-        product.sizes = await getSizes(products[i],res);
-        product.tags = await getTags(products[i],res);
+        product.sizes = await getSizes(product);
+        product.tags = await getTags(product);
         return product;
     }
     catch(error){
-        res.send(error);
+        console.log(error)
     }
 }
 
 exports.getAllProducts = async function(req, res){
     try{
         let products = await Product.find({active: true}).sort({viewed_times: -1});
-        products = await getProductsTagsAndSizes(products, res);
-        res.json(products)
+        let productsWithReference = await getProductsTagsAndSizes(products);
+        res.json(productsWithReference)
     }
     catch(error){
         res.send(error);
@@ -88,7 +88,7 @@ exports.createProduct = async function(req, res){
     }
 };
 
-function addReferences(existReference, newReference, res){
+function addReferences(existReference, newReference){
     try{
         let references = [];
         if(existReference.length > 0 && typeof existReference !== 'undefined' && existReference != null){
@@ -100,7 +100,7 @@ function addReferences(existReference, newReference, res){
         return references;
     }
     catch(error){
-        res.send(error);
+        console.log(error);
     }
 }
 
