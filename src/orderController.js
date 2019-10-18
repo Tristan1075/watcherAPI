@@ -85,6 +85,7 @@ exports.order_pay = async function(req, res){
         res.status(200).json(result);
     }
     catch(error){
+        console.log(error);
         res.send(error);
     }
 };
