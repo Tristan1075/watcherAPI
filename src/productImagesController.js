@@ -152,16 +152,13 @@ async function getImageLink(type, id) {
 }
 
 let download = async function(uri, filename, callback){
-    console.log("before request");
     request.head(uri, async function(err, res, body){
         request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
     });
-    console.log("before rp");
     rp(uri)
         .then(function(body, data) {
             console.log("downloading " + filename + "...");
-        })
-    console.log("after rp");
+        });
 };
 
 exports.postImageToFusion = async function (req, res) {
@@ -183,20 +180,18 @@ exports.postImageToFusion = async function (req, res) {
         console.log('case downloaded');
     });
 
-    console.log("images downloaded");
     res.send("Images downloaded");
 };
 
 exports.fusionImages = async function(req, res) {
     try {
-        console.log("try fusion images");
         images("images/bracelet.png")
             .draw(images("images/cadran.png"),0,0)
             .draw(images("images/boitier.png"),0,0)
             .save("images/custom_watch_.png", {quality: 50});
 
     } catch (e) {
-        console.log("ERREUR FUSION : " + e.toString());
+        console.log("ERROR FUSION : " + e.toString());
     }
 
     try {
