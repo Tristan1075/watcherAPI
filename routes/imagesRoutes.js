@@ -6,5 +6,7 @@ module.exports = function(app) {
     app.post('/images/face', imageController.postImageFace);
     app.post('/images/case', imageController.postImageCase);
     app.post('/images/custom', imageController.postCustomWatch);
+    app.post('/images/download', imageController.postImageToFusion);
+    app.get('/images/fusion', imageController.fusionImages);
 
 };
