@@ -170,16 +170,20 @@ exports.postImageToFusion = async function (req, res) {
     /*console.log("customStrap.link : " + customStrap.link);
     console.log("customFace.link : " + customFace.link);
     console.log("customCase.link : " + customCase.link);*/
+    console.log("before strap download");
     await download(customStrap.link, 'images/bracelet.png', function(){
         console.log('strap downloaded');
     });
+    console.log("before face download");
     await download(customFace.link, 'images/cadran.png', function(){
         console.log('face downloaded');
     });
+    console.log("before case download");
     await download(customCase.link, 'images/boitier.png', function(){
         console.log('case downloaded');
     });
 
+    console.log("images downloaded");
     res.send("Images downloaded");
 };
 
