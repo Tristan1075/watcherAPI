@@ -138,6 +138,7 @@ exports.order_state = async function(req, res){
 exports.order_history = async function(req, res){
     try{
         var orders = await Order.find({id_user: req.body.id_user});
+        console.log("retrieved orders for id_user : " + req.body.id_user);
         res.json(orders);
     }
     catch(error){
