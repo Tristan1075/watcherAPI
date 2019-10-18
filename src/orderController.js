@@ -66,6 +66,7 @@ async function getProductsAmount(order){
 
 exports.order_pay = async function(req, res){
     try{
+        console.log("new order made");
         var result = await stripe.charges.create({
             amount: req.body.totalCart, // Unit: cents
             currency: 'eur',
@@ -73,6 +74,7 @@ exports.order_pay = async function(req, res){
             description: 'Test payment',
         });
         let newOrder = new Order();
+        console.log("newOrder obj created : " + newOrder);
         newOrder.id_user = mongoose.Types.ObjectId(req.body.idUser);
         newOrder.id_shipping = mongoose.Types.ObjectId();
         newOrder.state = 1;
