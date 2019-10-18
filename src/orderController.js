@@ -76,14 +76,14 @@ exports.order_pay = async function(req, res){
         newOrder.products = req.body.allIdProducts;
         newOrder.save();
         console.log("newOrder : " + newOrder);
-        var result = await stripe.charges.create({
+        /*var result = await stripe.charges.create({
             amount: req.body.totalCart, // Unit: cents
             currency: 'eur',
             source: req.body.tokenId,
             description: 'Test payment',
             customer: "cus_G08rEDwjETa8K5"
-        });
-        res.status(200).json(result);
+        });*/
+        res.status(200).json(newOrder);
     }
     catch(error){
         console.log(error);
