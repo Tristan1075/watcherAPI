@@ -79,6 +79,7 @@ exports.order_pay = async function(req, res){
         newOrder.date_created = Date.now();
         newOrder.products = req.body.allIdProducts;
         newOrder.save();
+        console.log("newOrder : " + newOrder);
         res.status(200).json(result);
     }
     catch(error){
