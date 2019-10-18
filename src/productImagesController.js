@@ -180,7 +180,7 @@ exports.postImageToFusion = async function (req, res) {
         console.log('case downloaded');
     });
 
-    res(200);
+    res.send("Images downloaded");
 };
 
 exports.fusionImages = async function(req, res) {
