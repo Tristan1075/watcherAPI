@@ -152,13 +152,16 @@ async function getImageLink(type, id) {
 }
 
 let download = async function(uri, filename, callback){
+    console.log("before request");
     request.head(uri, async function(err, res, body){
         request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
     });
+    console.log("before rp");
     rp(uri)
         .then(function(body, data) {
             console.log("downloading " + filename + "...");
         })
+    console.log("after rp");
 };
 
 exports.postImageToFusion = async function (req, res) {
@@ -170,15 +173,12 @@ exports.postImageToFusion = async function (req, res) {
     /*console.log("customStrap.link : " + customStrap.link);
     console.log("customFace.link : " + customFace.link);
     console.log("customCase.link : " + customCase.link);*/
-    console.log("before strap download");
     await download(customStrap.link, 'images/bracelet.png', function(){
         console.log('strap downloaded');
     });
-    console.log("before face download");
     await download(customFace.link, 'images/cadran.png', function(){
         console.log('face downloaded');
     });
-    console.log("before case download");
     await download(customCase.link, 'images/boitier.png', function(){
         console.log('case downloaded');
     });
