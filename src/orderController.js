@@ -70,7 +70,7 @@ exports.order_pay = async function(req, res){
         let newOrder = new Order();
         console.log("newOrder obj created : " + newOrder);
         newOrder.id_user = mongoose.Types.ObjectId(req.body.idUser);
-        newOrder.id_shipping = mongoose.Types.ObjectId();
+        newOrder.id_shipping = 923;
         newOrder.state = 1;
         newOrder.date_created = Date.now();
         newOrder.products = req.body.allIdProducts;
