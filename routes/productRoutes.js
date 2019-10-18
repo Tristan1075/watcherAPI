@@ -27,6 +27,9 @@ module.exports = function(app){
 
     app.route('/products/updateImage')
         .post(products.updateImage);
+
+    app.route('/products/addImages')
+        .post(products.addImages);
 };
 
 

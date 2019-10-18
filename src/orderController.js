@@ -67,12 +67,6 @@ async function getProductsAmount(order){
 exports.order_pay = async function(req, res){
     try{
         console.log("new order made");
-        var result = await stripe.charges.create({
-            amount: req.body.totalCart, // Unit: cents
-            currency: 'eur',
-            source: req.body.tokenId,
-            description: 'Test payment',
-        });
         let newOrder = new Order();
         console.log("newOrder obj created : " + newOrder);
         newOrder.id_user = mongoose.Types.ObjectId(req.body.idUser);
@@ -82,6 +76,13 @@ exports.order_pay = async function(req, res){
         newOrder.products = req.body.allIdProducts;
         newOrder.save();
         console.log("newOrder : " + newOrder);
+        var result = await stripe.charges.create({
+            amount: req.body.totalCart, // Unit: cents
+            currency: 'eur',
+            source: req.body.tokenId,
+            description: 'Test payment',
+            customer: "cus_G08rEDwjETa8K5"
+        });
         res.status(200).json(result);
     }
     catch(error){
@@ -138,6 +139,7 @@ exports.order_state = async function(req, res){
 exports.order_history = async function(req, res){
     try{
         var orders = await Order.find({id_user: req.body.id_user});
+        console.log("retrieved orders for id_user : " + req.body.id_user);
         res.json(orders);
     }
     catch(error){
