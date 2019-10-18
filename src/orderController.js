@@ -3,6 +3,7 @@ Product = require('../models/productModel');
 const jwt = require('jsonwebtoken');
 const config = require('../config/secrets');
 const stripe = require("stripe")("sk_test_DH7gtTJ7XlHZR61iXtHuFjif00OO9eeJI5");
+var mongoose = require('mongoose');
 
 /*
 id user
@@ -65,17 +66,26 @@ async function getProductsAmount(order){
 
 exports.order_pay = async function(req, res){
     try{
-        var order = await Order.findOne({_id: req.body.id_order});
-        var amount = await getProductsAmount(order);
+        console.log("new order made");
         var result = await stripe.charges.create({
-            amount: amount, // Unit: cents
+            amount: req.body.totalCart, // Unit: cents
             currency: 'eur',
             source: req.body.tokenId,
             description: 'Test payment',
         });
+        let newOrder = new Order();
+        console.log("newOrder obj created : " + newOrder);
+        newOrder.id_user = mongoose.Types.ObjectId(req.body.idUser);
+        newOrder.id_shipping = mongoose.Types.ObjectId();
+        newOrder.state = 1;
+        newOrder.date_created = Date.now();
+        newOrder.products = req.body.allIdProducts;
+        newOrder.save();
+        console.log("newOrder : " + newOrder);
         res.status(200).json(result);
     }
     catch(error){
+        console.log(error);
         res.send(error);
     }
 };
@@ -131,7 +141,7 @@ exports.order_history = async function(req, res){
         res.json(orders);
     }
     catch(error){
-
+        console.log(error.toString());
     }
 };
 

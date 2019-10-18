@@ -94,10 +94,19 @@ exports.postCustomWatch = async function (req, res) {
 
     try {
         console.log("try fusion images");
-        images("images/bracelet.png")
-            .draw(images("images/cadran.png"),0,0)
-            .draw(images("images/boitier.png"),0,0)
-            .save("images/custom_watch_" + newWatch.id_user + ".png", {quality: 50});
+        if (fs.existsSync("images/bracelet.png"))  {
+            if (fs.existsSync("images/cadran.png")) {
+                if (fs.existsSync("images/boitier.png")) {
+                    images("images/bracelet.png")
+                        .draw(images("images/cadran.png"),0,0)
+                        .draw(images("images/boitier.png"),0,0)
+                        .save("images/custom_watch_" + newWatch.id_user + ".png", {quality: 50});
+                }
+            }
+        }
+        else {
+            console.log("files arent downloaded yet");
+        }
 
     } catch (e) {
         console.log("ERREUR FUSION : " + e.toString());
@@ -110,14 +119,20 @@ exports.postCustomWatch = async function (req, res) {
         }
     });
 
-    fs.readFile("images/custom_watch_" + newWatch.id_user + ".png", function (err, content) {
-            if (err) {
-                console.log(err);
-            } else {
-                res.writeHead(200,{'Content-type':'image/png'});
-                res.end(content);
-            }
-        });
+    try {
+        if (fs.existsSync("images/custom_watch_" + newWatch.id_user + ".png")) {
+            fs.readFile("images/custom_watch_" + newWatch.id_user + ".png", function (err, content) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.writeHead(200,{'Content-type':'image/png'});
+                    res.end(content);
+                }
+            });
+        }
+    }catch (e) {
+        console.log("ERROR send custom watch : " + e.toString());
+    }
 };
 
 async function getImageLink(type, id) {
