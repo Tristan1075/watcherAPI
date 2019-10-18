@@ -110,7 +110,8 @@ exports.postCustomWatch = async function (req, res) {
         }
     });
 
-    fs.readFile("images/custom_watch_" + newWatch.id_user + ".png", function (err, content) {
+    try {
+        fs.readFile("images/custom_watch_" + newWatch.id_user + ".png", function (err, content) {
             if (err) {
                 console.log(err);
             } else {
@@ -118,6 +119,9 @@ exports.postCustomWatch = async function (req, res) {
                 res.end(content);
             }
         });
+    }catch (e) {
+        console.log(e.toString());
+    }
 };
 
 async function getImageLink(type, id) {
