@@ -11,7 +11,7 @@ module.exports = function(app){
         .all(middleware.verify_token)
         .post(order.order_history);
     app.route('/order/pay')
-        .all(middleware.verify_token)
+        //.all(middleware.verify_token)
         .post(order.order_pay);
     app.route('/order/addProduct')
         .post(order.add_product);
